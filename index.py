@@ -7,14 +7,14 @@ import dash_bootstrap_components as dbc
 from app import app
 
 # Connect to your app pages
-from pages import page1, page2, home, MRRPro
+from pages import daily_plots, page2, home, MRRPro, calendar_view
 
 # Connect the navbar to the index
 from components import navbar
 
 # define the navbar
 nav = navbar.Navbar()
-# nav = navbar.NavbarLogo()
+nav = navbar.NavbarLogo()
 
 
 # Define the index page layout
@@ -27,14 +27,16 @@ app.layout = html.Div([
 
 @app.callback(Output('page-content', 'children'), [Input('url', 'pathname')])
 def display_page(pathname):
-    if pathname == '/home':
+    if pathname == '/home' or pathname == '/':
         return home.layout
-    if pathname == '/page1':
-        return page1.layout
+    if pathname == '/daily_plots':
+        return daily_plots.layout
     if pathname == '/page2':
         return page2.layout
     if pathname == '/MRRPro':
         return MRRPro.layout
+    if pathname == '/calendar_view':
+        return calendar_view.layout
     else:
         return "404 Page Error! Please choose a link"
 
