@@ -97,6 +97,6 @@ def NavbarLogo():
         ),
         color="#f1f3f5",
         dark=False,
-        className="mb-5",  # defines spacing around nav bar
+        className="mb-3",  # defines spacing around nav bar
     )
     return layout

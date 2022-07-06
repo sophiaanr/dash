@@ -74,7 +74,7 @@ def generate_thumbnail(image):
 
 def generate_column(header):
     return dbc.Col([
-        html.Div(header)
+        html.Center(html.H5(header))
     ])
 
 
@@ -93,7 +93,8 @@ layout = dbc.Container([
     html.P('Click thumbnail images to enlarge'),
 
     html.P(id='text-output'),
-    dbc.Row(id='image-header', style={'background-color': '#f1f3f5', 'padding': '10px 10px 10px 10px'}),
+    dbc.Row(id='image-header', style={'background-color': '#f1f3f5', 'padding': '10px 0px 0px 0px'}),
+    html.Br(),
     dbc.Row(justify='center', id='image-display'),
 
 ])
