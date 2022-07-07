@@ -42,8 +42,6 @@ def Navbar():
     return layout
 
 
-style = {'font-size': '14px'}
-
 # this example that adds a logo to the navbar brand
 # does not have collapse functionality when screen is smaller.
 def NavbarLogo():
@@ -72,8 +70,8 @@ def NavbarLogo():
                                       in_navbar=True,
                                       label="Plots",
                                       children=[
-                                          dbc.DropdownMenuItem('Daily Plots', href='/daily_plots', style=style),
-                                          dbc.DropdownMenuItem('Calendar View', href='/calendar_view', style=style),
+                                          dbc.DropdownMenuItem('Daily Plots', href='/daily_plots'),
+                                          dbc.DropdownMenuItem('Calendar View', href='/calendar_view'),
                                       ],
                                   ),
                                   dbc.NavItem(dbc.NavLink("Event Detection", href="/page2")),
@@ -82,16 +80,16 @@ def NavbarLogo():
                                       in_navbar=True,
                                       label="Instruments",
                                       children=[
-                                          dbc.DropdownMenuItem('MRR Pro', href='/MRRPro', style=style),
-                                          dbc.DropdownMenuItem('CL61', href='#', style=style),
-                                          dbc.DropdownMenuItem('PIP', href='#', style=style),
+                                          dbc.DropdownMenuItem('MRR Pro', href='/MRRPro'),
+                                          dbc.DropdownMenuItem('CL61', href='#'),
+                                          dbc.DropdownMenuItem('PIP', href='#'),
                                       ],
                                   ),
                                   dbc.NavItem(dbc.NavLink("Download", href="#")),
                                   ],
                         className="ms-auto",
                         navbar=True,
-                        style=style
+                        style={'font-size': '14px'}
                     ),
                     id="navbar-collapse2",
                     navbar=True,
