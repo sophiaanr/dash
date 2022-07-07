@@ -81,7 +81,7 @@ def generate_column(header):
 # Define the page layout
 layout = dbc.Container([
     dbc.Row([
-        html.H1("Daily Plots"),
+        html.H2("Daily Plots"),
         html.Br(),
         dbc.Row([
             dbc.Col([date_picker], width=3),

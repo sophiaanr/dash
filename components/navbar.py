@@ -55,13 +55,14 @@ def NavbarLogo():
                     # Use row and col to control vertical alignment of logo / brand
                     dbc.Row(
                         [
-                            dbc.Col(html.Img(src=SSEC_LOGO, height="45px")),
+                            dbc.Col(html.Img(src=SSEC_LOGO, height="40px")),
                             # dbc.Col(dbc.NavbarBrand(" Snowfall Observation", className="ms-2")),
                         ],
                         align="center",
                         className="g-0",
                     ),
-                    href="/home",
+                    href="https://www.ssec.wisc.edu",
+                    target='_blank',
                     style={"textDecoration": "none"},
                 ),
                 dbc.NavbarToggler(id="navbar-toggler2", n_clicks=0),
@@ -88,7 +89,7 @@ def NavbarLogo():
                                           dbc.DropdownMenuItem('PIP', href='#', style=STYLE),
                                       ],
                                   ),
-                                  dbc.NavItem(dbc.NavLink("Download", href="#")),
+                                  dbc.NavItem(dbc.NavLink("Download", href="/download")),
                                   ],
                         className="ms-auto",
                         navbar=True,
