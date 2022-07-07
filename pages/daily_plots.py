@@ -16,12 +16,12 @@ OPTIONS = ['CL61', 'MRRPro', 'PIP']
 date_picker = html.Div(
     [
         dmc.DatePicker(
-            id="date-picker",
-            label="Pick Date",
-            placeholder="Select date to view",
+            id='date-picker',
+            label='Pick Date',
+            placeholder='Select date to view',
             minDate=date(1970, 1, 2),
-            value=date(2022, 4, 18),  # last day with all 3 plots
-            style={"width": 200},
+            value=date(2022, 4, 18),
+            style={'width': 200},
             firstDayOfWeek='sunday'
         ),
         dmc.Space(h=10),

@@ -1,9 +1,11 @@
 # Import necessary libraries
-from dash import html
+from dash import html, Output, Input, State
 import dash_bootstrap_components as dbc
+from app import app
 
 SSEC_LOGO = "http://amrc.ssec.wisc.edu/images/SSEC_logo.png"
 
+STYLE = {'font-size': '14px'}
 
 # Define the navbar structure
 def Navbar():
@@ -35,6 +37,7 @@ def Navbar():
             brand='❄️ Snowfall Observation',
             brand_href="/home",
             color="dark",
+            style=STYLE,
             dark=True,
         ),
     ])
@@ -70,8 +73,8 @@ def NavbarLogo():
                                       in_navbar=True,
                                       label="Plots",
                                       children=[
-                                          dbc.DropdownMenuItem('Daily Plots', href='/daily_plots'),
-                                          dbc.DropdownMenuItem('Calendar View', href='/calendar_view'),
+                                          dbc.DropdownMenuItem('Daily Plots', href='/daily_plots', style=STYLE),
+                                          dbc.DropdownMenuItem('Calendar View', href='/calendar_view', style=STYLE),
                                       ],
                                   ),
                                   dbc.NavItem(dbc.NavLink("Event Detection", href="/page2")),
@@ -80,18 +83,20 @@ def NavbarLogo():
                                       in_navbar=True,
                                       label="Instruments",
                                       children=[
-                                          dbc.DropdownMenuItem('MRR Pro', href='/MRRPro'),
-                                          dbc.DropdownMenuItem('CL61', href='#'),
-                                          dbc.DropdownMenuItem('PIP', href='#'),
+                                          dbc.DropdownMenuItem('MRR Pro', href='/MRRPro', style=STYLE),
+                                          dbc.DropdownMenuItem('CL61', href='#', style=STYLE),
+                                          dbc.DropdownMenuItem('PIP', href='#', style=STYLE),
                                       ],
                                   ),
                                   dbc.NavItem(dbc.NavLink("Download", href="#")),
                                   ],
                         className="ms-auto",
                         navbar=True,
+                        style=STYLE
                     ),
                     id="navbar-collapse2",
                     navbar=True,
+                    is_open=False
                 ),
             ],
         ),
@@ -100,3 +105,15 @@ def NavbarLogo():
         className="mb-3",  # defines spacing around nav bar
     )
     return layout
+
+
+# add callback for toggling the collapse on small screens
+@app.callback(
+    Output("navbar-collapse", "is_open"),
+    [Input("navbar-toggler", "n_clicks")],
+    [State("navbar-collapse", "is_open")],
+)
+def toggle_navbar_collapse(n, is_open):
+    if n:
+        return not is_open
+    return is_open
