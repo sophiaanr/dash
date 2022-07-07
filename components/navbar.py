@@ -52,7 +52,7 @@ def NavbarLogo():
                     # Use row and col to control vertical alignment of logo / brand
                     dbc.Row(
                         [
-                            dbc.Col(html.Img(src=SSEC_LOGO, height="30px")),
+                            dbc.Col(html.Img(src=SSEC_LOGO, height="45px")),
                             # dbc.Col(dbc.NavbarBrand(" Snowfall Observation", className="ms-2")),
                         ],
                         align="center",
@@ -89,7 +89,6 @@ def NavbarLogo():
                                   ],
                         className="ms-auto",
                         navbar=True,
-                        style={'font-size': '14px'}
                     ),
                     id="navbar-collapse2",
                     navbar=True,

@@ -31,7 +31,7 @@ date_picker = html.Div(
 
 layout = dbc.Container([
     dbc.Row([
-        html.H2("Calendar View"),
+        html.H1("Calendar View"),
         html.Br(),
         dbc.Row([
             dbc.Col([date_picker], width=3),

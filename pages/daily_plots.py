@@ -74,14 +74,14 @@ def generate_thumbnail(image):
 
 def generate_column(header):
     return dbc.Col([
-        html.Center(html.H6(header))
+        html.Center(html.H5(header))
     ])
 
 
 # Define the page layout
 layout = dbc.Container([
     dbc.Row([
-        html.H2("Daily Plots"),
+        html.H1("Daily Plots"),
         html.Br(),
         dbc.Row([
             dbc.Col([date_picker], width=3),
