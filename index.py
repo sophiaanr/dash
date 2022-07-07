@@ -27,9 +27,9 @@ app.layout = html.Div([
 
 @app.callback(Output('page-content', 'children'), [Input('url', 'pathname')])
 def display_page(pathname):
-    if pathname == '/home' or pathname == '/':
-        return daily_plots.layout
-    if pathname == '/daily_plots':
+    if pathname == '/home':
+        return home.layout
+    if pathname == '/daily_plots' or pathname == '/':
         return daily_plots.layout
     if pathname == '/page2':
         return page2.layout

@@ -1,6 +1,6 @@
 import dash_bootstrap_components as dbc
 from dash import html, dcc, Output, Input
-import base64
+import dash_mantine_components as dmc
 import os
 from urllib.parse import quote as urlquote
 from flask import send_from_directory
@@ -23,18 +23,21 @@ def download(path):
     return send_from_directory(UPLOAD_DIRECTORY, path, as_attachment=True)
 
 
-layout = dbc.Container(
-    [
-        html.H2("File Browser"),
-        html.Br(),
-        dcc.Upload(
-            id="upload-data",
-
-            multiple=True,
-        ),
-        html.Div(id="file-list"),
-    ],
-)
+layout = dbc.Container([
+    html.H2("File Browser"),
+    html.Br(),
+    dcc.Upload(
+        id="upload-data",
+        multiple=True,
+    ),
+    dmc.Accordion(
+        children=[
+            dmc.AccordionItem([dbc.Table(bordered=True, id='file-list')], label="CL61"),
+            dmc.AccordionItem("Nothing here yet", label="MRR"),
+            dmc.AccordionItem("Nothing here yet", label="PIP"),
+        ], multiple=True
+    ),
+])
 
 
 # change bytes to readable form
@@ -79,6 +82,5 @@ def update_output(uploaded_filenames, uploaded_file_contents):
         rows = [html.Tr([html.Td(file_download_link(filename)), html.Td(sizeof_fmt(os.path.getsize(os.path.join(UPLOAD_DIRECTORY, filename))))]) for filename in files]
 
         table_body = [html.Tbody(rows)]
-        table = dbc.Table(table_header + table_body, bordered=True)
 
-        return table
+        return table_header + table_body
