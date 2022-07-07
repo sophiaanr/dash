@@ -1,11 +1,13 @@
 # Import necessary libraries
 from dash import html, Output, Input, State
 import dash_bootstrap_components as dbc
+
 from app import app
 
 SSEC_LOGO = "http://amrc.ssec.wisc.edu/images/SSEC_logo.png"
 
 STYLE = {'font-size': '14px'}
+
 
 # Define the navbar structure
 def Navbar():
@@ -65,7 +67,7 @@ def NavbarLogo():
                     target='_blank',
                     style={"textDecoration": "none"},
                 ),
-                dbc.NavbarToggler(id="navbar-toggler2", n_clicks=0),
+                dbc.NavbarToggler(id="navbar-toggler", n_clicks=0),
                 dbc.Collapse(
                     dbc.Nav(
                         children=[dbc.NavItem(dbc.NavLink("Home", href="/home")),
@@ -93,11 +95,11 @@ def NavbarLogo():
                                   ],
                         className="ms-auto",
                         navbar=True,
-                        style=STYLE
+                        style=STYLE,
                     ),
-                    id="navbar-collapse2",
+                    id="navbar-collapse",
                     navbar=True,
-                    is_open=False
+                    is_open=False,
                 ),
             ],
         ),
