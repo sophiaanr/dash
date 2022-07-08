@@ -7,7 +7,7 @@ from flask import send_from_directory
 
 from app import server, app
 
-UPLOAD_DIRECTORY = "/Users/sreiner/BlizexData/CL61_tar"
+UPLOAD_DIRECTORY = "/Users/sreiner/Documents/Plots/CL61/CL61_plots_202201"
 
 if not os.path.exists(UPLOAD_DIRECTORY):
     os.makedirs(UPLOAD_DIRECTORY)

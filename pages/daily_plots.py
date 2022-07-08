@@ -1,8 +1,8 @@
 # Import necessary libraries
 import datetime
 import os
-from datetime import date
-from dash import html, dcc, Output, Input
+from datetime import date, timedelta, datetime
+from dash import html, dcc, Output, Input, ctx
 import dash_bootstrap_components as dbc
 import dash_mantine_components as dmc
 from dash.exceptions import PreventUpdate
@@ -38,17 +38,9 @@ multiselect = html.Div([
         data=OPTIONS,
         searchable=True,
         clearable=True,
-        style={"width": 400, "marginBottom": 10},
+        style={"width": 315, "marginBottom": 10},
     ),
     dmc.Text(id="multi-selected-value"),
-    # dbc.Col([dbc.Button("Select All", id="select-all", n_clicks=0, outline=True, color='warning', size='sm')]),
-    # CHECKBOX DOESN'T SELECT ALL
-    # dmc.Checkbox(
-    #         id="select-all",
-    #         label="Select All",
-    # ),
-    # dmc.Space(h=10),
-    # dmc.Text(id="checkbox-output"),
 ])
 
 
@@ -83,16 +75,22 @@ layout = dbc.Container([
     dbc.Row([
         html.H2("Daily Plots"),
         html.Br(),
-        dbc.Row([
-            dbc.Col([date_picker], width=3),
-            dbc.Col([multiselect], width=4),
-        ],
-            justify='left')
+    ], justify='left'),
+    dbc.Row([
+        dbc.Col([date_picker], width=2),
+        dbc.Col(dmc.Button('<< Prev Day', variant='default', size='xs', id='prev-day', n_clicks=0), width=1,
+                style={'padding-top': '31px'}),
+        dbc.Col(dmc.Button('Next Day >>', variant='default', size='xs', id='next-day', n_clicks=0), width=2,
+                style={'padding-top': '31px'}),
+        dbc.Col([multiselect], width=3),
+        dbc.Col(dmc.Button("Select All", variant='default', id="select-all", n_clicks=0, size='xs'), width=1,
+                style={'padding-top': '31px'}),
     ]),
+
     html.Hr(),
     html.P('Click thumbnail images to enlarge'),
 
-    html.P(id='text-output'),
+    dbc.Container(id='text-output'),
     dbc.Row(id='image-header', style={'background-color': '#f1f3f5', 'padding': '10px 0px 0px 0px'}),
     html.Br(),
     dbc.Row(justify='center', id='image-display'),
@@ -106,7 +104,6 @@ layout = dbc.Container([
     Input("date-picker", "value"),
     Input('dropdown', 'value'))
 def update_output(date_pick, instruments):
-
     matches = {
         'CL61': 'beta',
         'MRRPro': 'refl',
@@ -155,3 +152,20 @@ def update_output(date_pick, instruments):
 @app.callback(Output("dropdown", "value"), Input("select-all", "n_clicks"))
 def select_all(n_clicks):
     return [option for option in OPTIONS]
+
+
+# callback for next/prev day button
+@app.callback(
+    Output("date-picker", "value"),
+    Input("next-day", "n_clicks"),
+    Input("prev-day", "n_clicks"),
+    Input("date-picker", "value"))
+def select_all(nxt, prev, value):
+    button_id = ctx.triggered_id
+    button_id = str(ctx.triggered[0]['prop_id'].split('.')[0])
+    curr_date = datetime.strptime(value, '%Y-%m-%d').date()
+    if button_id == 'next-day':
+        return curr_date + timedelta(days=1)
+    elif button_id == 'prev-day':
+        return curr_date - timedelta(days=1)
+    raise PreventUpdate
