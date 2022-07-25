@@ -161,8 +161,7 @@ def select_all(n_clicks):
     Input("prev-day", "n_clicks"),
     Input("date-picker", "value"))
 def select_all(nxt, prev, value):
-    button_id = ctx.triggered_id
-    button_id = str(ctx.triggered[0]['prop_id'].split('.')[0])
+    button_id = ctx.triggered[0]['prop_id'].split('.')[0]
     curr_date = datetime.strptime(value, '%Y-%m-%d').date()
     if button_id == 'next-day':
         return curr_date + timedelta(days=1)
