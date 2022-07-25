@@ -57,11 +57,10 @@ def NavbarLogo():
                     # Use row and col to control vertical alignment of logo / brand
                     dbc.Row(
                         [
-                            dbc.Col(html.Img(src=SSEC_LOGO, height="40px")),
-                            # dbc.Col(dbc.NavbarBrand(" Snowfall Observation", className="ms-2")),
+                            html.Img(src=SSEC_LOGO, height="40px"),
                         ],
                         align="center",
-                        className="g-0",
+                        class_name="g-0",
                     ),
                     href="https://www.ssec.wisc.edu",
                     target='_blank',
@@ -93,7 +92,7 @@ def NavbarLogo():
                                   ),
                                   dbc.NavItem(dbc.NavLink("Download", href="/download")),
                                   ],
-                        className="ms-auto",
+                        class_name="ms-auto",
                         navbar=True,
                         style=STYLE,
                     ),
@@ -105,7 +104,7 @@ def NavbarLogo():
         ),
         color="#f1f3f5",
         dark=False,
-        className="mb-3",  # defines spacing around nav bar
+        class_name="mb-3",  # defines spacing around nav bar
     )
     return layout
 
