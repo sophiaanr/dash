@@ -38,7 +38,7 @@ multiselect = html.Div([
         data=OPTIONS,
         searchable=True,
         clearable=True,
-        style={"width": 315, "marginBottom": 10},
+        style={"width": 300, "marginBottom": 10},
     ),
     dmc.Text(id="multi-selected-value"),
 ])
@@ -70,24 +70,48 @@ def generate_column(header):
     ])
 
 
+row = html.Div(
+    [
+        dbc.Row(
+            [
+                dbc.Col(html.Div([date_picker]), width='auto'),
+                dbc.Col(html.Div(dmc.Button('<< Prev Day', variant='default', size='xs', id='prev-day', n_clicks=0),
+                                 style={'padding-top': '31px'}), width='auto'),
+                dbc.Col(html.Div(dmc.Button('Next Day >>', variant='default', size='xs', id='next-day', n_clicks=0),
+                                 style={'padding-top': '31px'})),
+                dbc.Col(html.Div([multiselect]), width='auto'),
+                dbc.Col(html.Div(dmc.Button("Select All", variant='default', id="select-all", n_clicks=0, size='xs'),
+                                 style={'padding-top': '31px'}))
+            ]
+        ),
+    ]
+)
+
+table = html.Tbody([
+    html.Tr([
+        html.Td([
+            html.Td([date_picker]),
+            html.Td(dbc.Col(dmc.Button('<< Prev Day', variant='default', size='xs', id='prev-day', n_clicks=0),
+                            style={'padding-top': '31px'})),
+            html.Td(dbc.Col(dmc.Button('Next Day >>', variant='default', size='xs', id='next-day', n_clicks=0),
+                            style={'padding-top': '31px'})),
+        ]),
+        html.Td([
+            html.Td([multiselect]),
+            html.Td(dbc.Col(dmc.Button("Select All", variant='default', id="select-all", n_clicks=0, size='xs'),
+                            style={'padding-top': '31px'}))
+        ])
+    ]),
+])
+
 # Define the page layout
 layout = dbc.Container([
     dbc.Row([
         html.H2("Daily Plots"),
         html.Br(),
     ], justify='left'),
-    dbc.Row([
-        dbc.Col([date_picker], width=2),
-        dbc.Col(dmc.Button('<< Prev Day', variant='default', size='xs', id='prev-day', n_clicks=0), width=1,
-                style={'padding-top': '31px'}),
-        dbc.Col(dmc.Button('Next Day >>', variant='default', size='xs', id='next-day', n_clicks=0), width=2,
-                style={'padding-top': '31px'}),
-        dbc.Col([multiselect], width=3),
-        dbc.Col(dmc.Button("Select All", variant='default', id="select-all", n_clicks=0, size='xs'), width=1,
-                style={'padding-top': '31px'}),
-    ]),
-
-    html.Hr(),
+    dbc.Table(table),
+    row,
     html.P('Click thumbnail images to enlarge'),
 
     dbc.Container(id='text-output'),
