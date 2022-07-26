@@ -1,6 +1,9 @@
+import dash
 import dash_bootstrap_components as dbc
 from dash import html
 from components import navbar
+
+dash.register_page(__name__, path='/home', title='Home')
 
 carousel = dbc.Carousel(
     items=[

@@ -1,3 +1,4 @@
+import dash
 import dash_bootstrap_components as dbc
 from dash import html, dcc, Output, Input
 import dash_mantine_components as dmc
@@ -6,6 +7,8 @@ from urllib.parse import quote as urlquote
 from flask import send_from_directory
 
 from app import server, app
+
+dash.register_page(__name__, '/download')
 
 # UPLOAD_DIRECTORY = "/Users/sreiner/Documents/Plots/CL61/CL61_plots_202201"
 UPLOAD_DIRECTORY = '/Users/sophiareiner/Documents/UMCProject/photos'

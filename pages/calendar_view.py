@@ -4,6 +4,7 @@ import dash_bootstrap_components as dbc
 import dash_mantine_components as dmc
 import numpy as np
 from dash import html, Output, Input
+import dash
 from datetime import date
 from datetime import timedelta, datetime
 import pandas as pd
@@ -12,6 +13,8 @@ import pandas as pd
 from dash.exceptions import PreventUpdate
 from glob import glob
 from app import app
+
+dash.register_page(__name__, path='/calendar_view', title='Calendar View')
 
 date_picker = html.Div(
     [
