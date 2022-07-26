@@ -2,15 +2,17 @@
 from dash import html, dcc
 from dash.dependencies import Input, Output
 import dash_bootstrap_components as dbc
+import dash
 
 # Connect to main app.py file
 from app import app
 
 # Connect to your app pages
-from pages import daily_plots, page2, home, MRRPro, calendar_view, download
+from pages import daily_plots, eventdetection, home, MRRPro, calendar_view, download
 
 # Connect the navbar to the index
 from components import navbar
+
 
 # define the navbar
 nav = navbar.Navbar()
@@ -31,8 +33,8 @@ def display_page(pathname):
         return home.layout
     if pathname == '/daily_plots' or pathname == '/':
         return daily_plots.layout
-    if pathname == '/page2':
-        return page2.layout
+    if pathname == '/eventdetection':
+        return eventdetection.layout
     if pathname == '/MRRPro':
         return MRRPro.layout
     if pathname == '/calendar_view':
