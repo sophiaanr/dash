@@ -11,7 +11,7 @@ from app import server, app
 dash.register_page(__name__, '/download')
 
 # UPLOAD_DIRECTORY = "/Users/sreiner/Documents/Plots/CL61/CL61_plots_202201"
-UPLOAD_DIRECTORY = '/Users/sophiareiner/Documents/UMCProject/photos'
+UPLOAD_DIRECTORY = '/Users/sophiareiner/Documents/BlizExData/event_files_h5'
 
 if not os.path.exists(UPLOAD_DIRECTORY):
     os.makedirs(UPLOAD_DIRECTORY)
@@ -29,18 +29,20 @@ def download(path):
 
 layout = dbc.Container([
     html.H2("File Browser"),
+    html.P('Click file to download'),
     html.Br(),
     dcc.Upload(
         id="upload-data",
         multiple=True,
     ),
-    dmc.Accordion(
-        children=[
-            dmc.AccordionItem([dbc.Table(bordered=True, id='file-list')], label="CL61"),
-            dmc.AccordionItem("Nothing here yet", label="MRR"),
-            dmc.AccordionItem("Nothing here yet", label="PIP"),
-        ], multiple=True
-    ),
+    html.Div(dbc.Table(bordered=True, id='file-list'))
+    # dmc.Accordion(
+    #     children=[
+    #         dmc.AccordionItem([dbc.Table(bordered=True, id='file-list')], label="CL61"),
+    #         dmc.AccordionItem("Nothing here yet", label="MRR"),
+    #         dmc.AccordionItem("Nothing here yet", label="PIP"),
+    #     ], multiple=True
+    # ),
 ])
 
 
@@ -60,7 +62,7 @@ def uploaded_files():
         path = os.path.join(UPLOAD_DIRECTORY, filename)
         if os.path.isfile(path):
             files.append(filename)
-    return files
+    return sorted(files)
 
 
 def file_download_link(filename):

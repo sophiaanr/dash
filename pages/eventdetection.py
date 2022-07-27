@@ -1,16 +1,44 @@
 # Import necessary libraries
+import csv
+import os
+from glob import glob
+
 import dash
+import pandas as pd
 from dash import html, Output, Input, State, dcc
 import dash_bootstrap_components as dbc
 import dash_mantine_components as dmc
 
-### Add the page components here
+# Add the page components here
 from dash.exceptions import PreventUpdate
 
 from app import app
-from pages.daily_plots import date_picker
+from pages import daily_plots
 
 dash.register_page(__name__, '/eventdetection')
+
+
+def read_csv(fpath):
+    rows = []
+    with open(fpath) as f:
+        csvreader = csv.reader(f)
+        next(csvreader)
+        for r in csvreader:
+            rows.append(r)
+    return rows
+
+
+def format_dates(fpath):
+    rows = read_csv(fpath)
+    dates = []
+    for row in rows:
+        srt = pd.to_datetime(row[1]).strftime('%Y-%m-%d %H:%M:%S')
+        end = pd.to_datetime(row[2]).strftime('%Y-%m-%d %H:%M:%S')
+        dates.append(f'{srt} - {end}')
+    return dates
+
+
+OPTIONS = [format_dates('assets/aggregated_snow_events_400_3.csv'), ['hello', 'bye'], ['2022', '2023', '2024']]
 
 radioitems = html.Div(
     [
@@ -27,9 +55,6 @@ radioitems = html.Div(
     ]
 )
 
-OPTIONS = [['2021-12-25T00:01:25 - 2021-12-26T01:22:25', '2022-01-01T00:03:02 - 2022-01-02T13:35:43'], ['hello', 'bye'],
-           ['2022', '2023', '2024']]
-
 select = dmc.Select(
     label="Select Event",
     placeholder="Select event to view",
@@ -42,9 +67,7 @@ select = dmc.Select(
 
 go_button = html.Div([
     dbc.Row([dbc.Button('Go', size='sm', style={'width': '75%'})]),
-    dbc.Row(html.Br()),
-    dbc.Row(html.Br())
-], n_clicks=0, id='go-button')
+], id='go-button')
 
 table = dbc.Table([
     # html.Thead(),
@@ -71,7 +94,7 @@ layout = dbc.Container([
 ], id='layout')
 
 descriptions = [
-    'FALLING/BLOWING SNOW EVENTS - Events classified by any indication of occurring precipitation or blowing' \
+    'FALLING/BLOWING SNOW EVENTS - Events classified by any indication of occurring precipitation or blowing'
     ' snow from MRRPro or CL61 instruments.',
     'hello',
     'bye']
@@ -93,6 +116,19 @@ def update(radio_val):
     State('select', 'value')
 )
 def display(n_clicks, value):
-    if n_clicks == 0 or value is None:
+    if n_clicks is None or value is None:
         raise PreventUpdate
-    return [html.H1('Hello'), html.H3(value), dbc.Button('back', href='/eventdetection')]
+    x = value.split(' - ')
+    x = pd.to_datetime(x[-1]).strftime('%Y-%m-%dT%H%M%S')
+    path = glob(f'assets/Blowing_Precip_cl61_events/*{x}.png')
+    if len(path):
+        path = 'Blowing_Precip_cl61_events/' + os.path.basename(path[0])
+        img = daily_plots.generate_thumbnail(path)
+    else:
+        img = daily_plots.generate_thumbnail('Blowing_Precip_cl61_events/No-Image-Placeholder.png')
+
+    return [
+        html.H1('Hello'),
+        dcc.Link(dbc.Button('Back'), href='/eventdetection', refresh=True),
+        img
+    ]
