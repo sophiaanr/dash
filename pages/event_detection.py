@@ -38,7 +38,7 @@ def format_dates(fpath):
     return dates
 
 
-OPTIONS = [format_dates('assets/aggregated_snow_events_400_3.csv'), ['hello', 'bye'], ['2022', '2023', '2024']]
+OPTIONS = [format_dates('assets/aggregated_snow_events_400_3.csv'), ['08-08-2021', '08-12-2022', '04-2023'], ['2022', '2023', '2024']]
 
 radioitems = html.Div(
     [
@@ -118,17 +118,29 @@ def update(radio_val):
 def display(n_clicks, value):
     if n_clicks is None or value is None:
         raise PreventUpdate
+
+    matches = {
+        'CL61': 'beta',
+        'MRRPro': 'refl',
+        'PIP': 'psd'
+    }
+    headers = []
+    for x in instruments:
+        headers.append(generate_column(x))
+
     x = value.split(' - ')
     x = pd.to_datetime(x[-1]).strftime('%Y-%m-%dT%H%M%S')
-    path = glob(f'assets/Blowing_Precip_cl61_events/*{x}.png')
-    if len(path):
-        path = 'Blowing_Precip_cl61_events/' + os.path.basename(path[0])
-        img = daily_plots.generate_thumbnail(path)
+    paths = glob(f'assets/Blowing_Precip_events/*{x}.png')
+    img = []
+    if len(paths):
+        for path in paths:
+            p = 'Blowing_Precip_events/' + os.path.basename(path)
+            img.append(daily_plots.generate_thumbnail(p))
     else:
-        img = daily_plots.generate_thumbnail('Blowing_Precip_cl61_events/No-Image-Placeholder.png')
+        img.append(daily_plots.generate_thumbnail('Blowing_Precip_events/No-Image-Placeholder.png'))
 
     return [
         html.H1('Hello'),
         dcc.Link(dbc.Button('Back'), href='/eventdetection', refresh=True),
-        img
+        dbc.Row(img)
     ]

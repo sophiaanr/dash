@@ -8,7 +8,7 @@ import dash
 from app import app
 
 # Connect to your app pages
-from pages import daily_plots, eventdetection, home, MRRPro, calendar_view, download
+from pages import daily_plots, event_detection, home, MRRPro, calendar_view, download, blowing_snow_events
 
 # Connect the navbar to the index
 from components import navbar
@@ -33,14 +33,16 @@ def display_page(pathname):
         return home.layout
     if pathname == '/daily_plots' or pathname == '/':
         return daily_plots.layout
-    if pathname == '/eventdetection':
-        return eventdetection.layout
+    if pathname == '/event_detection':
+        return event_detection.layout
     if pathname == '/MRRPro':
         return MRRPro.layout
     if pathname == '/calendar_view':
         return calendar_view.layout
     if pathname == '/download':
         return download.layout
+    if pathname == '/blowing_snow_events':
+        return blowing_snow_events.layout
     else:
         return "404 Page Error! Please choose a link"
 
