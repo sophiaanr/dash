@@ -23,7 +23,7 @@ def Navbar():
                               dbc.DropdownMenuItem('Calendar View', href='/calendar_view'),
                           ],
                       ),
-                      dbc.NavItem(dbc.NavLink("Event Detection", href="/eventdetection")),
+                      dbc.NavItem(dbc.NavLink("Event Detection", href="/event_detection")),
                       dbc.DropdownMenu(
                           nav=True,
                           in_navbar=True,
@@ -79,7 +79,7 @@ def NavbarLogo():
                                           dbc.DropdownMenuItem('Calendar View', href='/calendar_view', style=STYLE),
                                       ],
                                   ),
-                                  dbc.NavItem(dbc.NavLink("Event Detection", href="/eventdetection")),
+                                  dbc.NavItem(dbc.NavLink("Event Detection", href="/event_detection")),
                                   dbc.DropdownMenu(
                                       nav=True,
                                       in_navbar=True,

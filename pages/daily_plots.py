@@ -114,7 +114,7 @@ layout = dbc.Container([
         html.H2("Daily Plots"),
         html.Br(),
     ], justify='left'),
-    dbc.Table(table),
+    # dbc.Table(table),
     row,
     html.P('Click thumbnail images to enlarge'),
 
@@ -188,7 +188,7 @@ def select_all(n_clicks):
     Input("next-day", "n_clicks"),
     Input("prev-day", "n_clicks"),
     Input("date-picker", "value"))
-def select_all(nxt, prev, value):
+def next_prev(nxt, prev, value):
     button_id = ctx.triggered[0]['prop_id'].split('.')[0]
     curr_date = datetime.strptime(value, '%Y-%m-%d').date()
     if button_id == 'next-day':

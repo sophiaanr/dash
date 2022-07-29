@@ -13,7 +13,8 @@ import dash_mantine_components as dmc
 from dash.exceptions import PreventUpdate
 
 from app import app
-from pages import daily_plots
+from pages import daily_plots, blowing_snow_events
+from pages.daily_plots import generate_column
 
 dash.register_page(__name__, '/eventdetection')
 
@@ -58,7 +59,7 @@ radioitems = html.Div(
 select = dmc.Select(
     label="Select Event",
     placeholder="Select event to view",
-    id="select",
+    id="select-event",
     data=OPTIONS[0],
     clearable=True,
     required=True,
@@ -70,11 +71,10 @@ go_button = html.Div([
 ], id='go-button')
 
 table = dbc.Table([
-    # html.Thead(),
     html.Tbody([
         html.Tr([html.Th("Event Type"), html.Th("Options"), html.Th('View')]),
         html.Tr(radioitems, style={'display': 'table-cell'}),
-        html.Tr(select, style={'display': 'table-cell'}, id='option-select'),
+        html.Tr(select, style={'display': 'table-cell'}),
         html.Tr(go_button, style={'display': 'table-cell'})
     ])
 ], style={'display': 'table', 'width': '50%'})
@@ -82,7 +82,7 @@ table = dbc.Table([
 # Define the final page layout
 layout = dbc.Container([
     dbc.Row([
-        html.Center(html.H1("Event Detection in Oakville, ND")),
+        html.Center(html.H2("Event Detection in Oakville, ND")),
         html.Br(),
         html.Center(table)
     ]),
@@ -102,8 +102,8 @@ descriptions = [
 
 @app.callback(
     Output('prod-description', 'children'),
-    Output('select', 'data'),
-    Output('select', 'value'),
+    Output('select-event', 'data'),
+    Output('select-event', 'value'),
     Input('radioitems-input', 'value')
 )
 def update(radio_val):
@@ -113,34 +113,11 @@ def update(radio_val):
 @app.callback(
     Output('layout', 'children'),
     Input('go-button', 'n_clicks'),
-    State('select', 'value')
+    State('select-event', 'value')
 )
 def display(n_clicks, value):
     if n_clicks is None or value is None:
         raise PreventUpdate
+    return blowing_snow_events.layout
 
-    matches = {
-        'CL61': 'beta',
-        'MRRPro': 'refl',
-        'PIP': 'psd'
-    }
-    headers = []
-    for x in instruments:
-        headers.append(generate_column(x))
 
-    x = value.split(' - ')
-    x = pd.to_datetime(x[-1]).strftime('%Y-%m-%dT%H%M%S')
-    paths = glob(f'assets/Blowing_Precip_events/*{x}.png')
-    img = []
-    if len(paths):
-        for path in paths:
-            p = 'Blowing_Precip_events/' + os.path.basename(path)
-            img.append(daily_plots.generate_thumbnail(p))
-    else:
-        img.append(daily_plots.generate_thumbnail('Blowing_Precip_events/No-Image-Placeholder.png'))
-
-    return [
-        html.H1('Hello'),
-        dcc.Link(dbc.Button('Back'), href='/eventdetection', refresh=True),
-        dbc.Row(img)
-    ]
