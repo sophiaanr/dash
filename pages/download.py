@@ -13,37 +13,27 @@ dash.register_page(__name__, '/download')
 # UPLOAD_DIRECTORY = "/Users/sreiner/Documents/Plots/CL61/CL61_plots_202201"
 UPLOAD_DIRECTORY = '/Users/sophiareiner/Documents/BlizExData/event_files_h5'
 
-if not os.path.exists(UPLOAD_DIRECTORY):
-    os.makedirs(UPLOAD_DIRECTORY)
+
+def layout():
+    return dbc.Container([
+        html.H2("File Browser"),
+        html.P('Click file to download'),
+        html.Br(),
+        dcc.Upload(
+            id="upload-data",
+            multiple=True,
+        ),
+        html.Div(dbc.Table(bordered=True, id='file-list'))
+    ], className='py-3')
 
 
 # Normally, Dash creates its own Flask server internally. By creating our own,
 # we can create a route for downloading files directly
-
 # source: https://docs.faculty.ai/user-guide/apps/examples/dash_file_upload_download.html
 @server.route("/download/<path:path>")
 def download(path):
     """Serve a file from the upload directory."""
     return send_from_directory(UPLOAD_DIRECTORY, path, as_attachment=True)
-
-
-layout = dbc.Container([
-    html.H2("File Browser"),
-    html.P('Click file to download'),
-    html.Br(),
-    dcc.Upload(
-        id="upload-data",
-        multiple=True,
-    ),
-    html.Div(dbc.Table(bordered=True, id='file-list'))
-    # dmc.Accordion(
-    #     children=[
-    #         dmc.AccordionItem([dbc.Table(bordered=True, id='file-list')], label="CL61"),
-    #         dmc.AccordionItem("Nothing here yet", label="MRR"),
-    #         dmc.AccordionItem("Nothing here yet", label="PIP"),
-    #     ], multiple=True
-    # ),
-])
 
 
 # change bytes to readable form
