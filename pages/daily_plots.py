@@ -12,40 +12,25 @@ from glob import glob
 
 from app import app
 
-dash.register_page(__name__, path='/daily_plots', title='Daily Plots')
-
 OPTIONS = ['CL61', 'MRRPro', 'PIP']
 
-# single date picker
-date_picker = html.Div(
-    [
-        dmc.DatePicker(
-            id='date-picker',
-            label='Pick Date',
-            placeholder='Select date to view',
-            minDate=date(1970, 1, 2),
-            value=date(2022, 4, 18),
-            style={'width': 200},
-            firstDayOfWeek='sunday'
-        ),
-        dmc.Space(h=10),
-        dmc.Text(id="selected-date"),
-    ]
-)
 
-multiselect = html.Div([
-    dmc.MultiSelect(
-        label="Select Instruments",
-        placeholder="Select instrument to view",
-        id="dropdown",
-        value=OPTIONS,
-        data=OPTIONS,
-        searchable=True,
-        clearable=True,
-        style={"width": 300, "marginBottom": 10},
-    ),
-    dmc.Text(id="multi-selected-value"),
-])
+def layout():
+    # Define the page layout
+    return dbc.Container([
+        dbc.Row([
+            html.H2("Daily Plots"),
+            html.Br(),
+        ], justify='left'),
+        # dbc.Table(table),
+        selector(),
+        html.P('Click thumbnail images to enlarge'),
+
+        dbc.Container(id='text-output'),
+        dbc.Row(id='image-header', style={'background-color': '#f1f3f5', 'padding': '10px 0px 0px 0px'}),
+        html.Br(),
+        dbc.Row(justify='center', id='image-display'),
+    ], className='py-3')
 
 
 def generate_thumbnail(image):
@@ -74,56 +59,69 @@ def generate_column(header):
     ])
 
 
-row = html.Div(
-    [
-        dbc.Row(
-            [
-                dbc.Col(html.Div([date_picker]), width='auto'),
-                dbc.Col(html.Div(dmc.Button('<< Prev Day', variant='default', size='xs', id='prev-day', n_clicks=0),
-                                 style={'padding-top': '31px'}), width='auto'),
-                dbc.Col(html.Div(dmc.Button('Next Day >>', variant='default', size='xs', id='next-day', n_clicks=0),
-                                 style={'padding-top': '31px'})),
-                dbc.Col(html.Div([multiselect]), width='auto'),
-                dbc.Col(html.Div(dmc.Button("Select All", variant='default', id="select-all", n_clicks=0, size='xs'),
-                                 style={'padding-top': '31px'}))
-            ]
+def selector():
+    # single date picker
+    date_picker = html.Div(
+        [
+            dmc.DatePicker(
+                id='date-picker',
+                label='Pick Date',
+                placeholder='Select date to view',
+                minDate=date(1970, 1, 2),
+                value=date(2022, 4, 18),
+                style={'width': 200},
+                firstDayOfWeek='sunday'
+            ),
+            dmc.Space(h=10),
+            dmc.Text(id="selected-date"),
+        ]
+    )
+
+    multiselect = html.Div([
+        dmc.MultiSelect(
+            label="Select Instruments",
+            placeholder="Select instrument to view",
+            id="dropdown",
+            value=OPTIONS,
+            data=OPTIONS,
+            searchable=True,
+            clearable=True,
+            style={"width": 300, "marginBottom": 10},
         ),
-    ]
-)
+        dmc.Text(id="multi-selected-value"),
+    ])
 
-table = html.Tbody([
-    html.Tr([
-        html.Td([
-            html.Td([date_picker]),
-            html.Td(dbc.Col(dmc.Button('<< Prev Day', variant='default', size='xs', id='prev-day', n_clicks=0),
-                            style={'padding-top': '31px'})),
-            html.Td(dbc.Col(dmc.Button('Next Day >>', variant='default', size='xs', id='next-day', n_clicks=0),
-                            style={'padding-top': '31px'})),
+    return html.Div([
+        dbc.Row([
+            dbc.Col(html.Div([date_picker]), width='auto'),
+            dbc.Col(html.Div(dmc.Button('<< Prev Day', variant='default', size='xs', id='prev-day', n_clicks=0),
+                             style={'padding-top': '31px'}), width='auto'),
+            dbc.Col(html.Div(dmc.Button('Next Day >>', variant='default', size='xs', id='next-day', n_clicks=0),
+                             style={'padding-top': '31px'})),
+            dbc.Col(html.Div([multiselect]), width='auto'),
+            dbc.Col(html.Div(dmc.Button("Select All", variant='default', id="select-all", n_clicks=0, size='xs'),
+                             style={'padding-top': '31px'}))
         ]),
-        html.Td([
-            html.Td([multiselect]),
-            html.Td(dbc.Col(dmc.Button("Select All", variant='default', id="select-all", n_clicks=0, size='xs'),
-                            style={'padding-top': '31px'}))
-        ])
-    ]),
-])
+    ])
 
-# Define the page layout
-layout = dbc.Container([
-    dbc.Row([
-        html.H2("Daily Plots"),
-        html.Br(),
-    ], justify='left'),
-    # dbc.Table(table),
-    row,
-    html.P('Click thumbnail images to enlarge'),
 
-    dbc.Container(id='text-output'),
-    dbc.Row(id='image-header', style={'background-color': '#f1f3f5', 'padding': '10px 0px 0px 0px'}),
-    html.Br(),
-    dbc.Row(justify='center', id='image-display'),
-
-])
+# alternate option for selector -- using table instead of rows and cols, not so good for small screens
+# table = html.Tbody([
+#     html.Tr([
+#         html.Td([
+#             html.Td([date_picker]),
+#             html.Td(dbc.Col(dmc.Button('<< Prev Day', variant='default', size='xs', id='prev-day', n_clicks=0),
+#                             style={'padding-top': '31px'})),
+#             html.Td(dbc.Col(dmc.Button('Next Day >>', variant='default', size='xs', id='next-day', n_clicks=0),
+#                             style={'padding-top': '31px'})),
+#         ]),
+#         html.Td([
+#             html.Td([multiselect]),
+#             html.Td(dbc.Col(dmc.Button("Select All", variant='default', id="select-all", n_clicks=0, size='xs'),
+#                             style={'padding-top': '31px'}))
+#         ])
+#     ]),
+# ])
 
 
 @app.callback(
