@@ -4,51 +4,13 @@ import dash_bootstrap_components as dbc
 
 from app import app
 
-SSEC_LOGO = "http://amrc.ssec.wisc.edu/images/SSEC_logo.png"
+SSEC_LOGO = "http://amrc.ssec.wisc.edu/images/SSEC_logo.png"  # on safari, this shows up weird
+SSEC_LOGO = 'https://www.ssec.wisc.edu/images/ssec_logo_small.png'
 
 STYLE = {'font-size': '14px'}
 
 
-# Define the navbar structure
-def Navbar():
-    layout = html.Div([
-        dbc.NavbarSimple(
-            children=[dbc.NavItem(dbc.NavLink("Home", href="/home")),
-                      dbc.DropdownMenu(
-                          nav=True,
-                          in_navbar=True,
-                          label="Plots",
-                          children=[
-                              dbc.DropdownMenuItem('Daily Plots', href='/daily_plots'),
-                              dbc.DropdownMenuItem('Calendar View', href='/calendar_view'),
-                          ],
-                      ),
-                      dbc.NavItem(dbc.NavLink("Event Detection", href="/event_detection")),
-                      dbc.DropdownMenu(
-                          nav=True,
-                          in_navbar=True,
-                          label="Instruments",
-                          children=[
-                              dbc.DropdownMenuItem('MRR Pro', href='/MRRPro'),
-                              dbc.DropdownMenuItem('CL61', href='#'),
-                              dbc.DropdownMenuItem('PIP', href='#'),
-                          ],
-                      ),
-                      dbc.NavItem(dbc.NavLink("Download", href="#")),
-                      ],
-            brand='❄️ Snowfall Observation',
-            brand_href="/home",
-            color="dark",
-            style=STYLE,
-            dark=True,
-        ),
-    ])
-
-    return layout
-
-
 # this example that adds a logo to the navbar brand
-# does not have collapse functionality when screen is smaller.
 def NavbarLogo():
     layout = dbc.Navbar(
         dbc.Container(
@@ -57,7 +19,7 @@ def NavbarLogo():
                     # Use row and col to control vertical alignment of logo / brand
                     dbc.Row(
                         [
-                            html.Img(src=SSEC_LOGO, height="40px"),
+                            html.Img(src=SSEC_LOGO, height="40px", width='40px'),
                         ],
                         align="center",
                         class_name="g-0",
@@ -102,9 +64,8 @@ def NavbarLogo():
                 ),
             ],
         ),
-        color="#f1f3f5",
+        # color="#f1f3f5",
         dark=False,
-        class_name="mb-3",  # defines spacing around nav bar
     )
     return layout
 
