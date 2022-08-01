@@ -16,8 +16,35 @@ from app import app
 
 dash.register_page(__name__, path='/calendar_view', title='Calendar View')
 
-date_picker = html.Div(
-    [
+
+def layout():
+    return dbc.Container([
+        dbc.Row([
+            html.H2("Calendar View"),
+            html.Br(),
+            dbc.Row([
+                dbc.Col([date_picker()], width=3),
+            ],
+                justify='left')
+        ]),
+        html.Hr(),
+        html.P('Click thumbnail images to enlarge'),
+        dmc.Grid([
+            dbc.Container([
+                dbc.Row(id='dates-row', style={'display': 'flex', "flexWrap": "nowrap", 'height': '36px'}),
+                dbc.Row(id='cl61-row', style={'display': 'flex', "flexWrap": "nowrap"}),
+                html.Br(),
+                dbc.Row(id='mrr-row', style={'display': 'flex', "flexWrap": "nowrap"}),
+                html.Br(),
+                dbc.Row(id='pip-row', style={'display': 'flex', "flexWrap": "nowrap"}),
+                html.Br(),
+            ])
+        ], align='center', style={'display': 'flex', "flexWrap": "nowrap", 'overflowX': 'scroll'})
+    ], className='py-3')
+
+
+def date_picker():
+    return html.Div([
         dmc.DateRangePicker(
             id="date-range-picker",
             label="Date Range",
@@ -29,33 +56,7 @@ date_picker = html.Div(
         ),
         dmc.Space(h=10),
         dmc.Text(id="selected-date-date-range-picker"),
-    ]
-)
-
-layout = dbc.Container([
-    dbc.Row([
-        html.H2("Calendar View"),
-        html.Br(),
-        dbc.Row([
-            dbc.Col([date_picker], width=3),
-        ],
-            justify='left')
-    ]),
-    html.Hr(),
-    html.P('Click thumbnail images to enlarge'),
-
-    dmc.Grid([
-        dbc.Container([
-            dbc.Row(id='dates-row', style={'display': 'flex', "flexWrap": "nowrap", 'height': '36px'}),
-            dbc.Row(id='cl61-row', style={'display': 'flex', "flexWrap": "nowrap"}),
-            html.Br(),
-            dbc.Row(id='mrr-row', style={'display': 'flex', "flexWrap": "nowrap"}),
-            html.Br(),
-            dbc.Row(id='pip-row', style={'display': 'flex', "flexWrap": "nowrap"}),
-            html.Br(),
-        ])
-    ], align='center', style={'display': 'flex', "flexWrap": "nowrap", 'overflowX': 'scroll'})
-])
+    ])
 
 
 def generate_thumbnail(image):
