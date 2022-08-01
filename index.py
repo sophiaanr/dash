@@ -11,12 +11,13 @@ from app import app
 from pages import daily_plots, event_detection, home, MRRPro, calendar_view, download, blowing_snow_events
 
 # Connect the navbar to the index
-from components import navbar
+from components import navbar, header, footer
 
 
 # define the navbar
-nav = navbar.Navbar()
 nav = navbar.NavbarLogo()
+header = header.Header()
+footer = footer.Footer()
 
 
 # Define the index page layout
@@ -24,23 +25,24 @@ app.layout = html.Div([
     dcc.Location(id='url', refresh=False),
     nav,
     html.Div(id='page-content', children=[]),
+    footer
 ])
 
 
 @app.callback(Output('page-content', 'children'), [Input('url', 'pathname')])
 def display_page(pathname):
     if pathname == '/home':
-        return home.layout
+        return home.layout()
     if pathname == '/daily_plots' or pathname == '/':
-        return daily_plots.layout
+        return daily_plots.layout()
     if pathname == '/event_detection':
-        return event_detection.layout
+        return event_detection.layout()
     if pathname == '/MRRPro':
-        return MRRPro.layout
+        return MRRPro.layout()
     if pathname == '/calendar_view':
-        return calendar_view.layout
+        return calendar_view.layout()
     if pathname == '/download':
-        return download.layout
+        return download.layout()
     if pathname == '/blowing_snow_events':
         return blowing_snow_events.layout
     else:
