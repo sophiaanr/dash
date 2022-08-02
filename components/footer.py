@@ -21,4 +21,4 @@ def Footer():
         html.Img(
             src='https://www.ssec.wisc.edu/images/logo-uw.png',
             width=120, style=style)
-    ], style={'text-align': 'center', 'background-color': '#002b36'})
+    ], style={'text-align': 'center', 'background-color': '#002b36', 'width': '100%', 'position': 'absolute', 'bottom': '0'})

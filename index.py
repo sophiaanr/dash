@@ -11,12 +11,11 @@ from app import app
 from pages import daily_plots, event_detection, home, MRRPro, calendar_view, download, blowing_snow_events
 
 # Connect the navbar to the index
-from components import navbar, header, footer
+from components import navbar, footer
 
 
 # define the navbar
 nav = navbar.NavbarLogo()
-header = header.Header()
 footer = footer.Footer()
 
 
@@ -24,9 +23,9 @@ footer = footer.Footer()
 app.layout = html.Div([
     dcc.Location(id='url', refresh=False),
     nav,
-    html.Div(id='page-content', children=[]),
+    html.Div(id='page-content', children=[], style={'padding-bottom': '235px'}),
     footer
-])
+], style={'min-height': '100vh', 'position': 'relative'})
 
 
 @app.callback(Output('page-content', 'children'), [Input('url', 'pathname')])

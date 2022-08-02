@@ -16,7 +16,7 @@ from dash.exceptions import PreventUpdate
 
 from app import app
 from pages import daily_plots
-from pages.daily_plots import generate_column, generate_thumbnail, multiselect
+from pages.daily_plots import generate_column, generate_thumbnail
 
 
 def read_csv(fpath):
@@ -40,6 +40,21 @@ def format_dates(fpath):
 
 
 OPTIONS = format_dates('assets/aggregated_snow_events_400_3.csv')
+
+multiselect = html.Div([
+        dmc.MultiSelect(
+            label="Select Instruments",
+            placeholder="Select instrument to view",
+            id="dropdown",
+            value=OPTIONS,
+            data=OPTIONS,
+            searchable=True,
+            clearable=True,
+            style={"width": 300, "marginBottom": 10},
+        ),
+        dmc.Text(id="multi-selected-value"),
+    ])
+
 
 select = dmc.Select(
     label="Select Event",
@@ -83,7 +98,7 @@ layout = dbc.Container([
     html.Br(),
     dbc.Row(justify='center', id='img-display'),
 
-])
+], className='py-3')
 
 
 @app.callback(

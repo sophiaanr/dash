@@ -48,22 +48,25 @@ def data_n_imagery():
                 dmc.Image(
                     src=app.get_asset_url('daily_img_icon.png'),
                     width=200, caption='Daily Images',
+                    withPlaceholder=True,
                     style=thumbnail_style),
                 href='/daily_plots'),
             html.A(
                 dmc.Image(
                     src=app.get_asset_url('event_detection_icon.png'),
                     width=200, caption='Image Browser',
+                    withPlaceholder=True,
                     style=thumbnail_style),
                 href='/calendar_view'),
             html.A(
                 dmc.Image(
                     src='https://play-lh.googleusercontent.com/IeNJWoKYx1waOhfWF6TiuSiWBLfqLb18lmZYXSgsH1fvb8v1IYiZr5aYWe0Gxu-pVZX3',
                     width=200, caption='Event Detection',
+                    withPlaceholder=True,
                     style=thumbnail_style),
                 href='/event_detection'),
         ], style={'text-align': 'center'}),
-    ], className='p-5', style={'background-color': '#f1f3f5'})
+    ], style={'background-color': '#f1f3f5'})
 
 
 def instruments():
@@ -74,18 +77,21 @@ def instruments():
                 dmc.Image(
                     src='https://play-lh.googleusercontent.com/coMv1dl31PCfEs6essJoEUwVryaqKHKQvENdZ_WYpN-PXa8Qfitkg3grQxIVN22W5A',
                     width=200, caption='Micro Rain Radar',
+                    withPlaceholder=True,
                     style=thumbnail_style),
                 href='/MRRPro'),
             html.A(
                 dmc.Image(
                     src='https://play-lh.googleusercontent.com/IeNJWoKYx1waOhfWF6TiuSiWBLfqLb18lmZYXSgsH1fvb8v1IYiZr5aYWe0Gxu-pVZX3',
                     width=200, caption='Vaisala Ceilometer',
+                    withPlaceholder=True,
                     style=thumbnail_style),
                 href='#'),
             html.A(
                 dmc.Image(
                     src='https://play-lh.googleusercontent.com/coMv1dl31PCfEs6essJoEUwVryaqKHKQvENdZ_WYpN-PXa8Qfitkg3grQxIVN22W5A',
                     width=200, caption='Precipitation Imaging Package',
+                    withPlaceholder=True,
                     style=thumbnail_style),
                 href='#'),
         ], style={'text-align': 'center'}),
