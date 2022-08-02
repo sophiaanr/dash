@@ -195,6 +195,7 @@ def toggle_modal(n1, n2, checkbox_val, select_val, is_open):
         x = pd.to_datetime(x[-1]).strftime('%Y-%m-%dT%H%M%S')
         cl61_path = glob(f'assets/Blowing_Precip_events/cl61/*{x}.png')
         mrr_path = glob(f'assets/Blowing_Precip_events/mrr/*{x}.png')
+        pip_path = glob(f'assets/Blowing_Precip_events/pip/*{x}.png')
 
         if cl61_path:
             cl61_path = 'Blowing_Precip_events/cl61/' + os.path.basename(cl61_path[0])
@@ -206,9 +207,11 @@ def toggle_modal(n1, n2, checkbox_val, select_val, is_open):
         else:
             mrr_path = 'Blowing_Precip_events/No-Image-Placeholder_refl.png'
 
-        pip_path = 'Blowing_Precip_events/No-Image-Placeholder_psd.png'
+        if pip_path:
+            pip_path = 'Blowing_Precip_events/pip/' + os.path.basename(pip_path[0])
+        else:
+            pip_path = 'Blowing_Precip_events/No-Image-Placeholder_psd.png'
 
-        # images = [generate_thumbnail(cl61_path), generate_thumbnail(mrr_path), generate_thumbnail(pip_path)]
         images = []
         for x in check_vals:
             if matches[x] in cl61_path:
