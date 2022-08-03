@@ -2,9 +2,9 @@
 import csv
 import os
 from glob import glob
+import pandas as pd
 
 import dash
-import pandas as pd
 from dash import html, Output, Input, State, dcc
 import dash_bootstrap_components as dbc
 import dash_mantine_components as dmc
@@ -14,15 +14,14 @@ from app import app
 from pages import daily_plots, blowing_snow_events
 from pages.daily_plots import generate_column, generate_thumbnail
 
-
+# event descriptions - changes with radio button
 descriptions = [
     'FALLING/BLOWING SNOW EVENTS - Events classified by any indication of occurring precipitation or blowing'
     ' snow from MRRPro or CL61 instruments.',
-    'hello',
-    'bye']
+    'BLOWING SNOW EVENTS - ',
+    'PRECIPITATION EVENTS - ']
 
 
-# Define the final page layout
 def layout():
     return dbc.Container([
         dbc.Row([
@@ -50,6 +49,10 @@ def read_csv(fpath):
 
 
 def format_dates(fpath):
+    """
+    formats dates from 'YYYY-MM-DDTHH:MM:SS' to 'YYYY-MM-DD HH:MM:SS'
+    makes it easier to read
+    """
     rows = read_csv(fpath)
     dates = []
     for row in rows:
@@ -59,13 +62,17 @@ def format_dates(fpath):
     return dates
 
 
-OPTIONS = [format_dates('assets/aggregated_snow_events_400_3.csv'), ['08-08-2021', '08-12-2022', '04-2023'],
-           ['2022', '2023', '2024']]
+# index 1, 2 are placeholders until we have precip and blowing snow data
+EVENT_DATES = [format_dates('assets/aggregated_snow_events_400_3.csv'), ['08-08-2021', '08-12-2022', '04-2023'],
+               ['2022', '2023', '2024']]
 
 
 def table():
+    """
+    Defines table that allows user to select and view event plots.
+    The table is formatted 'sideways' because it is the only way I could get vertical radio buttons.
+    """
     radioitems = html.Div([
-        # dbc.Label("Choose one"),
         dbc.RadioItems(
             options=[
                 {"label": "Falling/Blowing Snow", "value": 1},
@@ -87,7 +94,6 @@ def table():
                 {"label": "PIP", "value": 2},
             ],
             value=[0, 1, 2],
-            # inputCheckedClassName="border border-info bg-info",
             id="checklist-input",
         ),
     ])
@@ -100,7 +106,7 @@ def table():
         label="Select Event",
         placeholder="Select event to view",
         id="select-event",
-        data=OPTIONS[0],
+        data=EVENT_DATES[0],
         clearable=True,
         required=True,
         style={"width": 400},
@@ -117,8 +123,13 @@ def table():
 
 
 def modal():
+    """
+    A modal is a pop-up in the same window. It can be closed by pressing the 'Close' button
+    or the 'X'. User selects event date, instruments and press 'Go' to view events.
+    Missing event plots will have a placeholder image that shows there is missing data for
+    the selected day. User can download corresponding event hdf5 file with button.
+    """
     return html.Div([
-        # dbc.Button("Open modal", id="open-backdrop", n_clicks=0),
         dbc.Modal(
             [
                 dbc.ModalHeader(id='modal-header', close_button=True),
@@ -162,7 +173,8 @@ def modal():
     Input('radioitems-input', 'value')
 )
 def update(radio_val):
-    return descriptions[radio_val - 1], OPTIONS[radio_val - 1], None
+    """changes descriptions based on radio button pressed"""
+    return descriptions[radio_val - 1], EVENT_DATES[radio_val - 1], None
 
 
 @app.callback(
@@ -177,6 +189,12 @@ def update(radio_val):
     State("modal-backdrop", "is_open"),
 )
 def toggle_modal(n1, n2, checkbox_val, select_val, is_open):
+    """
+    opens modal after 'Go' button is pressed and closes after 'Close' or 'X' is pressed
+    gets paths of event plots (currently only blowing/precip events) and display using app.get_asset_url
+    note that get_asset_url appends '/assets' to any given path. if you have path '/assets/image.png' it
+    is not necessary to use get_asset_url
+    """
     matches = {
         'CL61': 'beta',
         'MRRPro': 'refl',
@@ -231,6 +249,7 @@ def toggle_modal(n1, n2, checkbox_val, select_val, is_open):
     Input('select-event', 'value'),
 )
 def download(n_clicks, value):
+    """updates file for download based on selected event"""
     if value is None:
         raise PreventUpdate
     x = value.split(' - ')

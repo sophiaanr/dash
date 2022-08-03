@@ -1,14 +1,14 @@
+import os
+from urllib.parse import quote as urlquote
+
 import dash
 import dash_bootstrap_components as dbc
 from dash import html, dcc, Output, Input
 import dash_mantine_components as dmc
-import os
-from urllib.parse import quote as urlquote
 from flask import send_from_directory
 
 from app import server, app
 
-dash.register_page(__name__, '/download')
 
 # UPLOAD_DIRECTORY = "/Users/sreiner/Documents/Plots/CL61/CL61_plots_202201"
 UPLOAD_DIRECTORY = '/Users/sophiareiner/Documents/BlizExData/event_files_h5'
@@ -18,6 +18,16 @@ def layout():
     return dbc.Container([
         html.H2("File Browser"),
         html.P('Click file to download'),
+        dbc.Accordion(dbc.AccordionItem([
+                html.P('Event files created using aggregated_snow_events_400_3.csv. The aggregation of snow events '
+                       'was done using DBScan, with an epsilon value of 400 and 3 min_samples. These resulting '
+                       'clusters were then aggregated using a script that loops through events and groups based '
+                       'on events duration and gap. The parameters were a gap of 1.5 hours between events and a '
+                       'minimum event duration of 30 minutes. The events contain flag data from mrr, cl61, and pip, '
+                       'pip precip rain and nonrain rates, and pip psd N0 fitted and lambda fitted reprocessed data. '
+                       'All data is processed on a time interval of 10 seconds, starting from the first available '
+                       'time and ending with the last available time (both from cl61 instrument). '),
+            ], title='File Description'), start_collapsed=True),
         html.Br(),
         dcc.Upload(
             id="upload-data",
@@ -27,17 +37,19 @@ def layout():
     ], className='py-3')
 
 
-# Normally, Dash creates its own Flask server internally. By creating our own,
-# we can create a route for downloading files directly
-# source: https://docs.faculty.ai/user-guide/apps/examples/dash_file_upload_download.html
 @server.route("/download/<path:path>")
 def download(path):
-    """Serve a file from the upload directory."""
+    """
+    Serve a file from the upload directory.
+    Normally, Dash creates its own Flask server internally. By creating our own, we can create a
+    route for downloading files directly
+    source: https://docs.faculty.ai/user-guide/apps/examples/dash_file_upload_download.html
+    """
     return send_from_directory(UPLOAD_DIRECTORY, path, as_attachment=True)
 
 
-# change bytes to readable form
 def sizeof_fmt(num, suffix="B"):
+    """change bytes to readable form"""
     for unit in ["", "k", "M", "G", "T", "P", "E", "Z"]:
         if abs(num) < 1024.0:
             return f"{num:3.1f}{unit}{suffix}"

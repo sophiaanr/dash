@@ -7,11 +7,12 @@ from app import app
 SSEC_LOGO = "http://amrc.ssec.wisc.edu/images/SSEC_logo.png"  # on safari, this shows up weird
 SSEC_LOGO = 'https://www.ssec.wisc.edu/images/ssec_logo_small.png'
 
-STYLE = {'font-size': '14px'}
 
-
-# this example that adds a logo to the navbar brand
 def NavbarLogo():
+    """
+    Navbar with logo
+    https://dash-bootstrap-components.opensource.faculty.ai/docs/components/navbar/
+    """
     layout = dbc.Navbar(
         dbc.Container(
             [
@@ -37,8 +38,8 @@ def NavbarLogo():
                                       in_navbar=True,
                                       label="Plots",
                                       children=[
-                                          dbc.DropdownMenuItem('Daily Plots', href='/daily_plots', style=STYLE),
-                                          dbc.DropdownMenuItem('Calendar View', href='/calendar_view', style=STYLE),
+                                          dbc.DropdownMenuItem('Daily Plots', href='/daily_plots'),
+                                          dbc.DropdownMenuItem('Calendar View', href='/calendar_view'),
                                       ],
                                   ),
                                   dbc.NavItem(dbc.NavLink("Event Detection", href="/event_detection")),
@@ -47,16 +48,15 @@ def NavbarLogo():
                                       in_navbar=True,
                                       label="Instruments",
                                       children=[
-                                          dbc.DropdownMenuItem('MRR Pro', href='/MRRPro', style=STYLE),
-                                          dbc.DropdownMenuItem('CL61', href='#', style=STYLE),
-                                          dbc.DropdownMenuItem('PIP', href='#', style=STYLE),
+                                          dbc.DropdownMenuItem('MRR Pro', href='/mrr'),
+                                          dbc.DropdownMenuItem('CL61', href='/cl61'),
+                                          dbc.DropdownMenuItem('PIP', href='/pip'),
                                       ],
                                   ),
                                   dbc.NavItem(dbc.NavLink("Download", href="/download")),
                                   ],
                         class_name="ms-auto",
                         navbar=True,
-                        style=STYLE,
                     ),
                     id="navbar-collapse",
                     navbar=True,
@@ -70,13 +70,15 @@ def NavbarLogo():
     return layout
 
 
-# add callback for toggling the collapse on small screens
 @app.callback(
     Output("navbar-collapse", "is_open"),
     [Input("navbar-toggler", "n_clicks")],
     [State("navbar-collapse", "is_open")],
 )
 def toggle_navbar_collapse(n, is_open):
+    """
+    callback for toggling the collapse on small screens
+    """
     if n:
         return not is_open
     return is_open

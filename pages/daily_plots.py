@@ -1,28 +1,25 @@
-# Import necessary libraries
 import datetime
 import os
 from datetime import date, timedelta, datetime
+from glob import glob
 
 import dash
 from dash import html, dcc, Output, Input, ctx
 import dash_bootstrap_components as dbc
 import dash_mantine_components as dmc
 from dash.exceptions import PreventUpdate
-from glob import glob
 
 from app import app
 
-OPTIONS = ['CL61', 'MRRPro', 'PIP']
+INSTRUMENTS = ['CL61', 'MRRPro', 'PIP']
 
 
 def layout():
-    # Define the page layout
     return dbc.Container([
         dbc.Row([
             html.H2("Daily Plots"),
             html.Br(),
         ], justify='left'),
-        # dbc.Table(table),
         selector(),
         html.P('Click thumbnail images to enlarge'),
 
@@ -34,6 +31,7 @@ def layout():
 
 
 def generate_thumbnail(image):
+    """generates thumbnail image with embedded link"""
     return dbc.Col([
         html.Div([
             html.A([
@@ -54,13 +52,18 @@ def generate_thumbnail(image):
 
 
 def generate_column(header):
+    """generates column for instrument headers"""
     return dbc.Col([
         html.Center(html.H5(header))
     ])
 
 
 def selector():
-    # single date picker
+    """
+    defines components for selection table
+      - date_picker: select day to view
+      - multiselect: select instruments to view
+    """
     date_picker = html.Div(
         [
             dmc.DatePicker(
@@ -82,8 +85,8 @@ def selector():
             label="Select Instruments",
             placeholder="Select instrument to view",
             id="dropdown",
-            value=OPTIONS,
-            data=OPTIONS,
+            value=INSTRUMENTS,
+            data=INSTRUMENTS,
             searchable=True,
             clearable=True,
             style={"width": 300, "marginBottom": 10},
@@ -105,31 +108,17 @@ def selector():
     ])
 
 
-# alternate option for selector -- using table instead of rows and cols, not so good for small screens
-# table = html.Tbody([
-#     html.Tr([
-#         html.Td([
-#             html.Td([date_picker]),
-#             html.Td(dbc.Col(dmc.Button('<< Prev Day', variant='default', size='xs', id='prev-day', n_clicks=0),
-#                             style={'padding-top': '31px'})),
-#             html.Td(dbc.Col(dmc.Button('Next Day >>', variant='default', size='xs', id='next-day', n_clicks=0),
-#                             style={'padding-top': '31px'})),
-#         ]),
-#         html.Td([
-#             html.Td([multiselect]),
-#             html.Td(dbc.Col(dmc.Button("Select All", variant='default', id="select-all", n_clicks=0, size='xs'),
-#                             style={'padding-top': '31px'}))
-#         ])
-#     ]),
-# ])
-
-
 @app.callback(
     Output("image-display", "children"),
     Output('image-header', 'children'),
     Input("date-picker", "value"),
     Input('dropdown', 'value'))
 def update_output(date_pick, instruments):
+    """
+    defines callback that updates images plots for date and instrument selection
+    gets paths of event plots (currently only blowing/precip events) and display using app.get_asset_url
+    note that get_asset_url appends '/assets' to any given path
+    """
     matches = {
         'CL61': 'beta',
         'MRRPro': 'refl',
@@ -174,19 +163,22 @@ def update_output(date_pick, instruments):
         raise PreventUpdate
 
 
-# callback for select all button
 @app.callback(Output("dropdown", "value"), Input("select-all", "n_clicks"))
 def select_all(n_clicks):
-    return [option for option in OPTIONS]
+    """callback for select all button"""
+    return [instrument for instrument in INSTRUMENTS]
 
 
-# callback for next/prev day button
 @app.callback(
     Output("date-picker", "value"),
     Input("next-day", "n_clicks"),
     Input("prev-day", "n_clicks"),
     Input("date-picker", "value"))
 def next_prev(nxt, prev, value):
+    """
+    callback for next/prev day button
+    uses dash.ctx.triggered to define different behavior for next vs prev button
+    """
     button_id = ctx.triggered[0]['prop_id'].split('.')[0]
     curr_date = datetime.strptime(value, '%Y-%m-%d').date()
     if button_id == 'next-day':

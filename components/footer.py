@@ -6,6 +6,13 @@ style = {'margin': 'auto', 'position': 'relative', 'top': '50%', 'transform': 't
 
 
 def Footer():
+    """
+    defines footer of page containing ssec logo, ssec address, and uw madison logo
+    styled so that footer is anchored at the bottom of page regardless of content length
+    https://www.freecodecamp.org/news/how-to-keep-your-footer-where-it-belongs-59c6aa05c59c/
+
+    Some weird behavior on small screens.
+    """
     return html.Div([
         html.Img(src=app.get_asset_url('SSEC_logo.png'), width=100,
                  style=style),

@@ -1,20 +1,17 @@
 import os
+import pandas as pd
+from glob import glob
+from datetime import date
+from datetime import timedelta, datetime
+import numpy as np
 
 import dash_bootstrap_components as dbc
 import dash_mantine_components as dmc
-import numpy as np
 from dash import html, Output, Input
 import dash
-from datetime import date
-from datetime import timedelta, datetime
-import pandas as pd
-
-# date range picker
 from dash.exceptions import PreventUpdate
-from glob import glob
-from app import app
 
-dash.register_page(__name__, path='/calendar_view', title='Calendar View')
+from app import app
 
 
 def layout():
@@ -23,7 +20,7 @@ def layout():
             html.H2("Calendar View"),
             html.Br(),
             dbc.Row([
-                dbc.Col([date_picker()], width=3),
+                dbc.Col([date_range_picker()], width=3),
             ],
                 justify='left')
         ]),
@@ -43,7 +40,8 @@ def layout():
     ], className='py-3')
 
 
-def date_picker():
+def date_range_picker():
+    """defines date range picker with start and end date"""
     return html.Div([
         dmc.DateRangePicker(
             id="date-range-picker",
@@ -60,7 +58,11 @@ def date_picker():
 
 
 def generate_thumbnail(image):
-    return dmc.Col([
+    """
+    generates thumbnail image with embedded link of width 2
+    width is defined # of containers out of 12 total
+    """
+    return dbc.Col([
         html.Div([
             html.A([
                 html.Img(
@@ -76,13 +78,14 @@ def generate_thumbnail(image):
                 )
             ], href=app.get_asset_url(image), target='_blank'),
         ]),
-    ], span=2)
+    ], width=2)
 
 
 def generate_col(text):
-    return dmc.Col([
+    """generates column of width 2 for instrument headers"""
+    return dbc.Col([
         html.Center(html.H6(text))
-    ], span=2)
+    ], width=2)
 
 
 @app.callback(
@@ -93,14 +96,19 @@ def generate_col(text):
     Input("date-range-picker", "value"),
 )
 def update_output(dates):
+    """
+    defines callback that updates images plots for date range and instrument selection
+    gets paths of event plots (currently only blowing/precip events) and display using app.get_asset_url
+    note that get_asset_url appends '/assets' to any given path
+    """
     if dates:
         srt_date = datetime.strptime(dates[0], '%Y-%m-%d').date()
         end_date = datetime.strptime(dates[1], '%Y-%m-%d').date()
         date_range = pd.date_range(start=srt_date, end=end_date, freq='1D')
 
-        cl61_cols = [dmc.Col(html.H5('CL61'), span=1)]  # I dislike how the labels move with the columns.
-        mrr_cols = [dmc.Col(html.H5('MRR'), span=1)]
-        pip_cols = [dmc.Col(html.H5('PIP'), span=1)]
+        cl61_cols = [dbc.Col(html.H5('CL61'), width=1)]  # I dislike how the labels move with the columns.
+        mrr_cols = [dbc.Col(html.H5('MRR'), width=1)]
+        pip_cols = [dbc.Col(html.H5('PIP'), width=1)]
         date_col = [dmc.Col(html.H6('Dates'), span=1)]
         for d in date_range:
             str_date = d.strftime('%Y%m%d')  # get date in string format

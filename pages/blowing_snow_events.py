@@ -39,15 +39,16 @@ def format_dates(fpath):
     return dates
 
 
-OPTIONS = format_dates('assets/aggregated_snow_events_400_3.csv')
+EVENT_DATES = format_dates('assets/aggregated_snow_events_400_3.csv')
+INSTRUMENTS = ['CL61', 'MRRPro', 'PIP']
 
 multiselect = html.Div([
         dmc.MultiSelect(
             label="Select Instruments",
             placeholder="Select instrument to view",
             id="dropdown",
-            value=OPTIONS,
-            data=OPTIONS,
+            value=INSTRUMENTS,
+            data=INSTRUMENTS,
             searchable=True,
             clearable=True,
             style={"width": 300, "marginBottom": 10},
@@ -60,8 +61,8 @@ select = dmc.Select(
     label="Select Event",
     placeholder="Select event to view",
     id="select",
-    data=OPTIONS,
-    value=OPTIONS[0],
+    data=EVENT_DATES,
+    value=EVENT_DATES[0],
     clearable=True,
     required=True,
     style={"width": 350, "marginBottom": 10},
@@ -123,6 +124,7 @@ def update_output(select_val, instruments):
     x = pd.to_datetime(x[-1]).strftime('%Y-%m-%dT%H%M%S')
     cl61_path = glob(f'assets/Blowing_Precip_events/cl61/*{x}.png')
     mrr_path = glob(f'assets/Blowing_Precip_events/mrr/*{x}.png')
+    pip_path = glob(f'assets/Blowing_Precip_events/pip/*{x}.png')
 
     if cl61_path:
         cl61_path = 'Blowing_Precip_events/cl61/' + os.path.basename(cl61_path[0])
@@ -134,7 +136,10 @@ def update_output(select_val, instruments):
     else:
         mrr_path = 'Blowing_Precip_events/No-Image-Placeholder_refl.png'
 
-    pip_path = 'Blowing_Precip_events/No-Image-Placeholder_psd.png'
+    if pip_path:
+        pip_path = 'Blowing_Precip_events/pip/' + os.path.basename(pip_path[0])
+    else:
+        pip_path = 'Blowing_Precip_events/No-Image-Placeholder_psd.png'
 
     images = []
     for x in instruments:
@@ -157,11 +162,11 @@ def update_output(select_val, instruments):
 def next_prev(nxt, prev, value):
     if value is not None:
         button_id = ctx.triggered[0]['prop_id'].split('.')[0]
-        idx = OPTIONS.index(value)
-        if idx < len(OPTIONS) - 1 and button_id == 'next-event':
-            return OPTIONS[idx + 1]
+        idx = EVENT_DATES.index(value)
+        if idx < len(EVENT_DATES) - 1 and button_id == 'next-event':
+            return EVENT_DATES[idx + 1]
         if idx > 0 and button_id == 'prev-event':
-            return OPTIONS[idx - 1]
+            return EVENT_DATES[idx - 1]
     raise PreventUpdate
 
 

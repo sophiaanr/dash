@@ -5,7 +5,7 @@ from flask import Flask
 server = Flask(__name__)
 app = dash.Dash(__name__,
                 external_stylesheets=[dbc.themes.ZEPHYR],
-                # ZEPHYR, LUMEN , QUARTZ(weird), SOLAR(cool but don't like the background on the other pages)
+                # BOOTSTRAP, ZEPHYR, LUMEN , SOLAR(cool but don't like the background on the other pages)
                 meta_tags=[{"name": "viewport", "content": "width=device-width"}],
                 suppress_callback_exceptions=True, server=server)
-app.title = 'BlizEx'
+app.title = 'BlizEx'  # defines title tab
