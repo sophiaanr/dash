@@ -176,7 +176,7 @@ def next_prev(nxt, prev, value):
     Input('select', 'value'),
 )
 def download(n_clicks, value):
-    if value == '' or n_clicks is None:
+    if value == '':
         raise PreventUpdate
     x = value.split(' - ')
     x = pd.to_datetime(x[-1]).strftime('%Y-%m-%dT%H%M%S')

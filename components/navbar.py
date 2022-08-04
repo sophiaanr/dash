@@ -7,6 +7,8 @@ from app import app
 SSEC_LOGO = "http://amrc.ssec.wisc.edu/images/SSEC_logo.png"  # on safari, this shows up weird
 SSEC_LOGO = 'https://www.ssec.wisc.edu/images/ssec_logo_small.png'
 
+STYLE = {'font-size': '14px'}
+
 
 def NavbarLogo():
     """
@@ -38,8 +40,8 @@ def NavbarLogo():
                                       in_navbar=True,
                                       label="Plots",
                                       children=[
-                                          dbc.DropdownMenuItem('Daily Plots', href='/daily_plots'),
-                                          dbc.DropdownMenuItem('Calendar View', href='/calendar_view'),
+                                          dbc.DropdownMenuItem('Daily Plots', href='/daily_plots', style=STYLE),
+                                          dbc.DropdownMenuItem('Calendar View', href='/calendar_view', style=STYLE),
                                       ],
                                   ),
                                   dbc.NavItem(dbc.NavLink("Event Detection", href="/event_detection")),
@@ -48,15 +50,16 @@ def NavbarLogo():
                                       in_navbar=True,
                                       label="Instruments",
                                       children=[
-                                          dbc.DropdownMenuItem('MRR Pro', href='/mrr'),
-                                          dbc.DropdownMenuItem('CL61', href='/cl61'),
-                                          dbc.DropdownMenuItem('PIP', href='/pip'),
+                                          dbc.DropdownMenuItem('MRR Pro', href='/mrr', style=STYLE),
+                                          dbc.DropdownMenuItem('CL61', href='/cl61', style=STYLE),
+                                          dbc.DropdownMenuItem('PIP', href='/pip', style=STYLE),
                                       ],
                                   ),
                                   dbc.NavItem(dbc.NavLink("Download", href="/download")),
                                   ],
                         class_name="ms-auto",
                         navbar=True,
+                        style=STYLE
                     ),
                     id="navbar-collapse",
                     navbar=True,

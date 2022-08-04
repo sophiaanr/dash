@@ -13,9 +13,14 @@ def layout():
     """home page layout"""
     return html.Div([
         html.Div([
+            #html.Img(
+            #    src=app.get_asset_url('test_img.png'),
+            #    style={'width': '100%'}),
             html.Img(
-                src=app.get_asset_url('test_img.png'),
-                style={'width': '100%'}),
+                # src='https://www.ssec.wisc.edu/news/wp-content/uploads/sites/19/2020/05/SSEC_Rooftop-1026x577.jpg',
+                src=app.get_asset_url('na_tmo_snowcover_lrg.jpeg'),
+                # https://eoimages.gsfc.nasa.gov/images/imagerecords/2000/2657/na_tmo_snowcover_lrg.jpg
+                style={'width': '100%'})
         ]),
         about(),
         data_n_imagery(),
@@ -88,7 +93,7 @@ def instruments():
             html.Center(html.H3('Instruments')),
             html.A(
                 dmc.Image(
-                    src=app.get_asset_url('mrr_closeup_copy.jpg'),
+                    src=app.get_asset_url('mrr_closeup_thumbnail.jpg'),
                     width=265, height=200, caption='Micro Rain Radar',
                     withPlaceholder=True,
                     style=thumbnail_style),
