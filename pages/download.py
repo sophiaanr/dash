@@ -1,11 +1,7 @@
 import os
-from urllib.parse import quote as urlquote
 from glob import glob
-import dash
 import dash_bootstrap_components as dbc
-from dash import html, dcc, Output, Input
-import dash_mantine_components as dmc
-from app import server, app
+from dash import html
 
 
 def layout():

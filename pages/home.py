@@ -1,8 +1,6 @@
-import dash
 import dash_bootstrap_components as dbc
 import dash_mantine_components as dmc
 from dash import html
-from app import app
 
 
 # styling to line up images side-by-side
@@ -13,13 +11,9 @@ def layout():
     """home page layout"""
     return html.Div([
         html.Div([
-            #html.Img(
-            #    src=app.get_asset_url('test_img.png'),
-            #    style={'width': '100%'}),
             html.Img(
-                # src='https://www.ssec.wisc.edu/news/wp-content/uploads/sites/19/2020/05/SSEC_Rooftop-1026x577.jpg',
                 src=app.get_asset_url('na_tmo_snowcover_lrg.jpeg'),
-                # https://eoimages.gsfc.nasa.gov/images/imagerecords/2000/2657/na_tmo_snowcover_lrg.jpg
+                # https://svs.gsfc.nasa.gov/2487
                 style={'width': '100%'})
         ]),
         about(),
@@ -41,7 +35,7 @@ def layout():
 def about():
     return html.Div([
         html.Div([
-            html.H3('About'),
+            html.H3('About BlizEx'),
             html.P("This browser provides information about observations of blizzard, blowing snow, and general "
                    "wintertime precipitation events that occurred during the BlizEx field study in 2021-2023. "
                    "Observations were performed at the University of North Dakota Oakville Prairie Field Station near "
