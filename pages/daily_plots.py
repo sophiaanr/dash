@@ -1,3 +1,8 @@
+"""
+Define daily plots page. Select date and instruments to view daily
+images.
+"""
+
 import datetime
 import os
 from datetime import date, timedelta, datetime

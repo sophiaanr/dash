@@ -1,3 +1,7 @@
+"""
+Define calendar view page.
+Choose a date range and view daily images within that range
+"""
 import os
 import pandas as pd
 from glob import glob

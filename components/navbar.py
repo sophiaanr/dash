@@ -1,4 +1,3 @@
-# Import necessary libraries
 from dash import html, Output, Input, State
 import dash_bootstrap_components as dbc
 

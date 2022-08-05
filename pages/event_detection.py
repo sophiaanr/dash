@@ -1,4 +1,8 @@
-# Import necessary libraries
+"""
+Define event detection page.
+Choose event type, event dates, instruments to view event plots and
+download.
+"""
 import csv
 import os
 from glob import glob

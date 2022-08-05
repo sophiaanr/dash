@@ -1,3 +1,10 @@
+"""
+Run this app with `python3 index.py` and
+visit http://127.0.0.1:8050/ or http://localhost:8050 in your web browser.
+
+Define multi-page functionality
+"""
+
 # Import necessary libraries
 from dash import html, dcc
 from dash.dependencies import Input, Output

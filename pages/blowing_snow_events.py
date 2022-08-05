@@ -1,4 +1,9 @@
-# Import necessary libraries
+"""
+Alternate page to event_detection.py
+View events similarly to daily_plots.py click through events,
+choose instruments, download hdf5
+"""
+
 import csv
 import h5py
 import numpy as np

@@ -1,3 +1,8 @@
+"""
+Define download page. Table with event hdf5 files available to download
+with associated file size
+"""
+
 import os
 from glob import glob
 import dash_bootstrap_components as dbc
