@@ -5,7 +5,6 @@ choose instruments, download hdf5
 """
 
 import csv
-import h5py
 import numpy as np
 import os
 from glob import glob
