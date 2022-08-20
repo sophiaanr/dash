@@ -1,6 +1,8 @@
 """
-Run this app with `python3 index.py` and
-visit http://127.0.0.1:8050/ or http://localhost:8050 in your web browser.
+Run this app with docker:
+    docker build -t blizex-website
+    docker run -p 8050:8050 blizex-website
+visit http://localhost:8050 in your web browser.
 
 Define multi-page functionality
 """
@@ -12,7 +14,7 @@ import dash_bootstrap_components as dbc
 import dash
 
 # Connect to main app.py file
-from app import app
+from app import app, server
 
 # Connect to your app pages
 from pages import daily_plots, event_detection, home, mrr, calendar_view, download, blowing_snow_events, cl61, pip
@@ -73,6 +75,5 @@ def display_page(pathname):
 
 
 # Run the app on localhost:8050
-# can define port: port=1234
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server(host='0.0.0.0', port='8050', debug=False)
