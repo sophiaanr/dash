@@ -1,7 +1,7 @@
 """
 Run this app with docker:
-    docker build -t blizex-website
-    docker run -p 8050:8050 blizex-website
+    docker build -t blizex-website .
+    docker run -p 97211:97211 blizex-website
 visit http://localhost:8050 in your web browser.
 
 Define multi-page functionality
@@ -74,6 +74,6 @@ def display_page(pathname):
         return page_not_found()
 
 
-# Run the app on localhost:8050
+# Run the app on localhost:64231
 if __name__ == '__main__':
-    app.run_server(host='0.0.0.0', port='8050', debug=False)
+    app.run_server(host='0.0.0.0', port='64231', debug=False)
