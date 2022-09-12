@@ -17,17 +17,17 @@ app = dash.Dash(__name__,
                 meta_tags=[{"name": "viewport", "content": "width=device-width"}],
                 suppress_callback_exceptions=True)
 
-pass_dict = {}
 if exists('auth_users.txt'):
+    pass_dict = {}
     with open('auth_users.txt') as f:
         for line in f:
             k, v = line.strip().split('\t')
             pass_dict[k] = v
+    auth = dash_auth.BasicAuth(
+        app,
+        pass_dict
+    )
 
-auth = dash_auth.BasicAuth(
-    app,
-    pass_dict
-)
 
 app.title = 'BlizEx'  # defines title tab
 server = app.server
